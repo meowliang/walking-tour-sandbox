@@ -10,7 +10,7 @@ const trackData = [
     {
         "chapterNum": 5,
         "title": "Avila Adobe",
-        "videoFile": "360-scrubbed_injected.mp4",
+        "videoFile": "360-scrubbed_small_injected.mp4",
         "duration": "2:30",
         "audioFile": "ch5.mp3",
         "imgFile": "ch5.jpg"
