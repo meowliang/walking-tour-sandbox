@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Walking Tour Prototype</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+  </head>
+
+  <body>
+
+        <!--permissions-->
+        <!-- <div id="permissions">
+            <p>Allow device orientation permissions</p>
+            <button id="allowButton">Allow</button>
+        </div> -->
+
+        <div id="tourContainer">
+
+
+            <div id="contentContainer">
+                 <!--audio mode-->
+                <div id="chapterAudio" class="content">
+                   
+                    <div class="chapter-image">
+                        <img id="trackImage" src="ch4.jpg">
+                    </div>
+                    <div id="trackInfo">
+                        <h2 id = "trackTitle">Chapter 4. Olde California</h2>
+                        <p id = "tourTitle">Neither Here Nor There</p>
+                    </div>
+                    
+                </div>
+
+                <!--360 mode-->
+                <div id="xrContent" class="content" style="display: none;">
+                    <iframe id="videoContainer" allowfullscreen>
+                        <video src="360-scrubbed_small_injected.mp4" controls width="100%"></video>
+                    </iframe>
+                </div>
+            </div>
+
+                <!--playlist-->
+            <div id="playlistContainer">
+                <div id="playlistHeader">
+                    <h2>Chapters</h2>
+                </div>
+                <div id="playlistChapters">
+                    <div id="track4" class="playlist-item">4. Olde California</div>
+                    <div id="track5" class="playlist-item">5. Avila Adobe</div>
+                    <div id="track6" class="playlist-item">6. Mexicans in LA</div>
+                </div>
+            </div>
+
+        </div>
+
+                <!--player controls-->
+            <div id="playerControls">
+                <div id="xrMode">
+                    <button id="viewXR" class="xr-controls"><p>Start 360</p></button>
+                    <button id="exitXR" class="xr-controls" style="display: none;"><p>Exit 360</p></button>
+                </div>
+
+                <div id="topControls">
+                    <button id="menuButton" class="controls">📖</button>
+                    <div id="mainControls">
+                        <button id="prevButton" class="controls">⏪</button>
+                        <button id="playButton" class="controls">▶️</button>
+                        <button id="nextButton" class="controls">⏩</button>
+                    </div>
+                    <button id="speedButton" class="controls">1x</button>
+                </div>
+
+                  <div class="progress-container">
+                    <span id="currTime">0:00</span>
+                    <div id="trackProgress">
+                        <div id="progressBar"></div>
+                    </div>
+                    <span id="trackDuration"></span>
+                </div>
+
+                <div class="volume">
+                    <button id="muteButton" class="controls">🔉</button>
+                    <input type = "range" id="volumeSlider" min="0" max="1" step="0.1" value = "1">
+                </div>
+
+              
+                
+            </div>
+
+        <!--audio-->
+        <audio id="audio" crossOrigin="anonymous" preload="auto" playsinline>
+            <source src="./ch4.mp3" type="audio/mpeg">
+        </audio>
+
+        <script src="script.js"></script>
+  </body>
+</html>
