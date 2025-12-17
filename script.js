@@ -4,15 +4,15 @@ const trackData = [
         "title": "Olde California",
         "videoFile": "",
         "duration": "3:40",
-        "audioFile": "ch4.mp3",
+        "audioFile": "Chapter4-audio-file.mp3",
         "imgFile": "ch4.jpg"
     },
     {
         "chapterNum": 5,
         "title": "Avila Adobe",
-        "videoFile": "360-scrubbed_small_injected.mp4",
+        "videoFile": "360-stock_injected.mp4",
         "duration": "2:30",
-        "audioFile": "ch5.mp3",
+        "audioFile": "Chapter5-audio-file.mp3",
         "imgFile": "ch5.jpg"
     },
     {
@@ -20,7 +20,7 @@ const trackData = [
         "title": "Mexicans in LA",
         "videoFile": "",
         "duration": "2:50",
-        "audioFile": "ch6.mp3",
+        "audioFile": "Chapter6-audio-file.mp3",
         "imgFile": "ch6.jpg"
     }
 ];
