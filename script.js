@@ -4,24 +4,24 @@ const trackData = [
         "title": "Olde California",
         "videoFile": "",
         "duration": "3:40",
-        "audioFile": "https://cmm-cloud-2.s3.us-west-1.amazonaws.com/WALKING+TOURS/2025-03-15-DTLA-WALKINGTOUR/2025-03-15-DTLA-AUDIO/2025-03-15-DTLA-CH-4.mp3",
-        "imgFile": "https://cmm-cloud-2.s3.us-west-1.amazonaws.com/WALKING+TOURS/2025-03-15-DTLA-WALKINGTOUR/2025-04-14-DTLA-ARTWORK-RESIZED/2025-03-15-DTLA-ART-CH-4.jpg"
+        "audioFile": "Chapter4-audio-file.mp3",
+        "imgFile": "ch4.jpg"
     },
     {
         "chapterNum": 5,
         "title": "Avila Adobe",
-        "videoFile": "https://cmm-cloud-2.s3.us-west-1.amazonaws.com/WALKING+TOURS/2025-04-10-DTLA-XR-CHAPTERS/2025-04-10-DTLA-XR-5-low-1200.mp4",
+        "videoFile": "360-stock_injected.mp4",
         "duration": "2:30",
-        "audioFile": "https://cmm-cloud-2.s3.us-west-1.amazonaws.com/WALKING+TOURS/2025-03-15-DTLA-WALKINGTOUR/2025-03-15-DTLA-AUDIO/2025-03-15-DTLA-CH-5.mp3",
-        "imgFile": "https://cmm-cloud-2.s3.us-west-1.amazonaws.com/WALKING+TOURS/2025-03-15-DTLA-WALKINGTOUR/2025-04-14-DTLA-ARTWORK-RESIZED/2025-03-15-DTLA-ART-CH-5.jpg"
+        "audioFile": "Chapter5-audio-file.mp3",
+        "imgFile": "ch5.jpg"
     },
     {
         "chapterNum": 6,
         "title": "Mexicans in LA",
         "videoFile": "",
         "duration": "2:50",
-        "audioFile": "https://cmm-cloud-2.s3.us-west-1.amazonaws.com/WALKING+TOURS/2025-03-15-DTLA-WALKINGTOUR/2025-03-15-DTLA-AUDIO/2025-03-15-DTLA-CH-6.mp3",
-        "imgFile": "https://cmm-cloud-2.s3.us-west-1.amazonaws.com/WALKING+TOURS/2025-03-15-DTLA-WALKINGTOUR/2025-04-14-DTLA-ARTWORK-RESIZED/2025-03-15-DTLA-ART-CH-6.jpg"
+        "audioFile": "Chapter6-audio-file.mp3",
+        "imgFile": "ch6.jpg"
     }
 ];
 
