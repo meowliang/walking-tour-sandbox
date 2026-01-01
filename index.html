@@ -11,12 +11,6 @@
 
   <body>
 
-        <!--permissions-->
-        <!-- <div id="permissions">
-            <p>Allow device orientation permissions</p>
-            <button id="allowButton">Allow</button>
-        </div> -->
-
         <div id="tourContainer">
 
 
@@ -37,7 +31,7 @@
                 <!--360 mode-->
                 <div id="xrContent" class="content" style="display: none;">
                     <iframe id="videoContainer" allowfullscreen>
-                        <video src="360-stock_injected.mp4" controls width="100%"></video>
+                        <video src="360-stock_injected.mp4" controls width="100%" id="xrVideo"></video>
                     </iframe>
                 </div>
             </div>
@@ -48,9 +42,6 @@
                     <h2>Chapters</h2>
                 </div>
                 <div id="playlistChapters">
-                    <div id="track4" class="playlist-item">4. Olde California</div>
-                    <div id="track5" class="playlist-item">5. Avila Adobe</div>
-                    <div id="track6" class="playlist-item">6. Mexicans in LA</div>
                 </div>
             </div>
 
@@ -64,25 +55,39 @@
                 </div>
 
                 <div id="topControls">
-                    <button id="menuButton" class="controls">📖</button>
+                    <button id="menuButton" class="controls">
+                        <img src="menu.svg" style="max-width: 40px; height: auto;">
+                    </button>
                     <div id="mainControls">
-                        <button id="prevButton" class="controls">⏪</button>
-                        <button id="playButton" class="controls">▶️</button>
-                        <button id="nextButton" class="controls">⏩</button>
+                        <button id="prevButton" class="controls">
+                            <img src="prev.svg" style="max-width: 40px; height: auto;">
+                        </button>
+                        <button id="playButton" class="controls">
+                            <img src="play.svg" style="max-width: 40px; height: auto;">
+                        </button>
+                        <button id="nextButton" class="controls">
+                            <img src="next.svg" style="max-width: 40px; height: auto;">
+                        </button>
                     </div>
                     <button id="speedButton" class="controls">1x</button>
                 </div>
 
                   <div class="progress-container">
-                    <span id="currTime">0:00</span>
-                    <div id="trackProgress">
-                        <div id="progressBar"></div>
+                    <div id="timecodes">
+                        <span id="currTime">0:00</span>
+                        <span id="trackDuration">0:00</span>
                     </div>
-                    <span id="trackDuration"></span>
+                    <div id="trackProgress" class="progress-bar">
+                        <div id="progressBar" class="progress"></div>
+                        <input type ="range" id="seekSlider" min="0" max="100" value="0" class="seek">
+                    </div>
+                    
                 </div>
 
                 <div class="volume">
-                    <button id="muteButton" class="controls">🔉</button>
+                    <button id="muteButton" class="controls">
+                        <img src="vol.svg" style="max-width: 40px; height: auto;">
+                    </button>
                     <input type = "range" id="volumeSlider" min="0" max="1" step="0.1" value = "1">
                 </div>
 

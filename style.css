@@ -25,7 +25,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* transform: translateY(50%) */
 }
 
 #allowButton {
@@ -52,7 +51,6 @@ body {
 .content {
     background-color: #666;
     width: 100vw;
-    max-width: 1080px;
     height: 100vh;
     
 }
@@ -122,12 +120,13 @@ body {
 }
 
 #xrContent {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     background: black;
+    z-index: 100;
 }
 
 #xrContent iframe {
@@ -150,22 +149,6 @@ body {
     object-fit: cover;
 }
 
-#trackInfo {
-
-}
-
-#trackTitle {
-
-}
-
-#tourTitle {
-
-}
-
-
-#chapterXR {
-
-}
 
 #immersiveVideo {
     width: 100vw;
@@ -175,7 +158,7 @@ body {
 #playerControls {
     z-index: 100;
     position: fixed;
-    bottom: 180px;
+    bottom: 140px;
     left: 0;
     right: 0;
     margin: auto;
@@ -221,17 +204,13 @@ body {
     z-index: 200;
 }
 
-#viewXR {
-
-}
-
 .xr-controls:hover {
     cursor: grab;
 }
 
 .progress-container {
     width: 100%;
-    height: 8px;
+    height: 20px;
     position: relative;
     background: #999;
     display: flex;
@@ -246,4 +225,35 @@ body {
     border-radius: 4px;
     height: 100%;
     width: 0%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#trackProgress {
+    position: relative;
+    height: 8px;
+    background: #999;
+    border-radius: 4px;
+}
+
+.seek {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 2;
+}
+
+#timecodes {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#currTime, #trackDuration {
+    min-width: 20px;
+    text-align: center;
+    font-size: 1.0rem;
+    color: white;
 }

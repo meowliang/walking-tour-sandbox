@@ -3,7 +3,7 @@ const trackData = [
         "chapterNum": 4,
         "title": "Olde California",
         "videoFile": "",
-        "duration": "3:40",
+        "duration": "0:30",
         "audioFile": "Chapter4-audio-file.mp3",
         "imgFile": "ch4.jpg"
     },
@@ -11,7 +11,7 @@ const trackData = [
         "chapterNum": 5,
         "title": "Avila Adobe",
         "videoFile": "360-stock_injected.mp4",
-        "duration": "2:30",
+        "duration": "0:44",
         "audioFile": "Chapter5-audio-file.mp3",
         "imgFile": "ch5.jpg"
     },
@@ -19,7 +19,7 @@ const trackData = [
         "chapterNum": 6,
         "title": "Mexicans in LA",
         "videoFile": "",
-        "duration": "2:50",
+        "duration": "0:30",
         "audioFile": "Chapter6-audio-file.mp3",
         "imgFile": "ch6.jpg"
     }
@@ -34,6 +34,7 @@ const trackInfo = document.getElementById("trackInfo");
 const trackTitle = document.getElementById("trackTitle");
 const tourTitle = document.getElementById("tourTitle");
 const xrContent = document.getElementById("xrContent");
+const xrVideo = document.getElementById("xrVideo");
 const videoContainer = document.getElementById("videoContainer");
 const viewXRButton = document.getElementById("viewXR");
 const exitXRButton = document.getElementById("exitXR");
@@ -67,7 +68,6 @@ let iframeQueue = [];
 function initializeTour() {
     setupEvents();
     setupAudio();
-    // deviceOrientation();
     loadTrack(0);
     loadMenu();
     window.addEventListener('message', handleIframe);
@@ -78,26 +78,33 @@ function setupEvents() {
     muteButton.addEventListener('click', muteUnmute);
     volumeSlider.addEventListener('click', adjustVol);
     audio.addEventListener('timeupdate', updateProgress);
-    progressBar.parentElement.addEventListener('click', seekProgress);
+    const progressContainer = document.querySelector('.progress-container');
+    progressBar.addEventListener('click', seekProgress);
     viewXRButton.addEventListener('click', enterXR);
     exitXRButton.addEventListener('click', exitXR);
-    // allowButton.addEventListener('click', reqDeviceOrientation);
     menuButton.addEventListener('click', playlistOpenClose);
     nextButton.addEventListener('click', playNext);
     prevButton.addEventListener('click', playPrevious);
     speedButton.addEventListener('click', adjustSpeed);
     videoContainer.addEventListener('load', iframeLoaded);
 
-    track4.addEventListener('click', () => loadTrack(0, true));
-    track5.addEventListener('click', ()=> loadTrack(1, true));
-    track6.addEventListener('click', () =>loadTrack(2, true));
+
+    playlistChapters.addEventListener('click', (e) => {
+        const track = e.target.closest('.playlist-item');
+        if (track && track.dataset.index) {
+            loadTrack(parseInt(track.dataset.index), true);
+            playlistOpenClose();
+        }
+    });
 }
 
 function muteUnmute() {
     isMuted = !isMuted;
     audio.muted = isMuted;
     if (isMuted) {
-        muteButton.textContent = "🔇";
+        muteButton.innerHTML = `<img src="vol.svg" style="max-width: 40px; height: auto;">`;
+    } else {
+        muteButton.innerHTML = `<img src="mute.svg" style="max-width: 40px; height: auto;">`;
     }
 }
 
@@ -121,9 +128,12 @@ function updateProgress() {
 }
 
 function seekProgress(e) {
-    const progress = e.currentTarget;
-    const clickPos = e.offsetX / progress.offsetWidth;
+    const progress = document.getElementById('trackProgress');
+    const rect = progress.getBoundingClientRect();
+    const clickPos = (e.clientX - rect.left) / rect.width;
     let updatedTime = clickPos * audio.duration;
+
+    updatedTime = Math.max(0, Math.min(updatedTime, audio.duration));
     audio.currentTime = updatedTime;
 
     if (isXR) {
@@ -165,9 +175,7 @@ function enterXR() {
     isXR = true;
     exitingXR = false;
 
-    // audio.style.display = 'none';
     xrContent.style.display = 'block';
-    // viewXRButton.style.display = 'none';
     exitXRButton.style.display = 'flex';
 
     let wasPlaying = !audio.paused;
@@ -191,7 +199,7 @@ function setupXR(vid) {
     xrContent.innerHTML = "";
 
     const iframe = document.createElement('iframe');
-    iframe.id = "iframe360";
+    iframe.id = "xrVideo";
     iframe.allowFullScreen = true;
     iframe.style.width = "100%";
     iframe.style.height = "100%";
@@ -321,13 +329,11 @@ function setupXR(vid) {
 
 function exitXR(vidTime) {
     exitingXR = true;
-    isXR = false;
+
 
     postMsgToIframe({
         action:  'getCurrentTime'
     });
-
-    exitingXR = false;
 
     chapterAudio.style.display = 'flex';
     xrContent.style.display = 'none';
@@ -335,7 +341,9 @@ function exitXR(vidTime) {
 
     xrContent.innerHTML = "";
 
-    exitingXR = false;
+        exitingXR = false;
+        isXR = false;
+
 }
 
 function finishExitXR(vidTime) {
@@ -346,24 +354,13 @@ function finishExitXR(vidTime) {
 
     if (!atEnd) {
         audio.currentTime = newTime;
-        if (isPlaying){
-            audio.play();
-        }
+               updatePlayPause();
+
     } else {
         audio.currentTime = 0;
-        isPlaying = false;
         updatePlayPause();
     }
 
-    //     let curr = trackData[currTrack];
-    
-    // if (curr !== "") {
-    //     viewXRButton.style.display = 'flex';
-    // } else {
-    //     viewXRButton.style.display = 'none';
-    // }
-
-    // exitXRButton.style.display = 'none';
 
     isXR = false;
 }
@@ -411,12 +408,12 @@ function loadTrack(idx, autoplay = false) {
                 exitXRButton.style.display = 'none';
     }
 
-    playButton.textContent = "▶️";
+    playButton.innerHTML = `<img src="play.svg" style="max-width: 40px; height: auto;">`;
 
     if (autoplay) {
 
         isPlaying = true;
-        playButton.textContent = "⏸️";
+        playButton.innerHTML = `<img src="pause.svg" style="max-width: 40px; height: auto;">`;
         audio.play();
 
         if (audio.readyState >= 3) {
@@ -425,21 +422,20 @@ function loadTrack(idx, autoplay = false) {
         
     } else {
         isPlaying = false;
-        playButton.textContent = "▶️";
+        playButton.innerHTML = `<img src="play.svg" style="max-width: 40px; height: auto;">`;
     }
 
-    // updatePlayPause();
 
 }
 
 function playAudio() {
     audio.play().then(() => {
         isPlaying = true;
-        playButton.textContent = "⏸️";
+        playButton.innerHTML = `<img src="pause.svg" style="max-width: 40px; height: auto;">`;
         audio.removeEventListener('canplay', playAudio);
             }).catch(error => {
                 isPlaying = false;
-                playButton.textContent = "▶️";
+                playButton.innerHTML = `<img src="play.svg" style="max-width: 40px; height: auto;">`;
                 audio.removeEventListener('canplay', playAudio);
     });
         
@@ -447,11 +443,13 @@ function playAudio() {
 
 function loadMenu() {  
 
+    playlistChapters.innerHTML = '';
+
     for (i=0; i<trackData.length; i++) {
         const chapter = document.createElement("div");
         chapter.className = 'playlist-item';
         chapter.dataset.index = i;
-        const track = trackData[currTrack];
+        const track = trackData[i];
 
         chapter.innerHTML = `
         <div id="track${track.chapterNum}" class="playlist-item">${track.chapterNum}. ${track.title}
@@ -473,7 +471,7 @@ function playlistOpenClose() {
         menuButton.textContent="X";
         playlistContainer.style.display = 'flex';
     } else {
-        menuButton.innerHTML = "📖";
+        menuButton.innerHTML = `<img src="menu.svg" style="max-width: 40px; height: auto;">`;
         playlistContainer.style.display = 'none';
     }
 }
@@ -486,10 +484,6 @@ function playPrevious() {
     const prev = (currTrack - 1 + 3) % 3;
     loadTrack(prev, true);
 
-    // audio.currentTime = 0;
-    // audio.play();
-    // isPlaying = true;
-    // updatePlayPause();
 }
 
 function playNext() {
@@ -504,10 +498,6 @@ function playNext() {
 
      audio.removeEventListener('canplay', playAudio);
 
-    // audio.currentTime = 0;
-    // audio.play();
-    // isPlaying = true;
-    // updatePlayPause();
 }
 
 function adjustSpeed() {
@@ -522,8 +512,8 @@ function adjustSpeed() {
     const newSpeed = speed[currIndex];
 
     audio.playbackRate = newSpeed;
-    if (video) {
-        video.playbackRate = newSpeed;
+    if (xrVideo) {
+        xrVideo.playbackRate = newSpeed;
     }
 
     speedButton.textContent = `${newSpeed}x`;
@@ -558,33 +548,13 @@ function updatePlayPause() {
 
     if (isPlaying) {
         audio.play();
-        playButton.textContent = "⏸️";
+        playButton.innerHTML = `<img src="pause.svg" style="max-width: 40px; height: auto;">`;
     } else {
         audio.pause();
-        playButton.textContent = "▶️";
+        playButton.innerHTML = `<img src="play.svg" style="max-width: 40px; height: auto;">`;
     }
 }
 
-// function reqDeviceOrientation() {
-//     if (typeof DeviceOrientationEvent !== 'undefined' && 
-//       typeof DeviceOrientationEvent.requestPermission === 'function') {
-    
-//     DeviceOrientationEvent.requestPermission()
-//       .then(permissionState => {
-//         if (permissionState === 'granted') {
-//           localStorage.setItem('hasRequestedMotionPermissions', 'true');
-//           permissions.style.display = 'none';
-          
-//           if (typeof DeviceMotionEvent !== 'undefined' && 
-//               typeof DeviceMotionEvent.requestPermission === 'function') {
-//             DeviceMotionEvent.requestPermission();
-//           }
-//         }
-//       })
-//     }
-
-//     permissions.style.display = 'none';
-// }
 
 
 function handleIframe(e) {
@@ -592,18 +562,6 @@ function handleIframe(e) {
         iframeReady = true;
       iframeQueue.forEach(msg => postMsgToIframe(msg));
       iframeQueue = [];
-//     } else if (e.data.type === 'videoReady') {
-//       postMsgToIframe({
-//           action: 'setTime',
-//           time: audio.currentTime
-//       });
-//       if (isPlaying) {
-//           postMsgToIframe({ 
-//               action: 'play',
-//               time: audio.currentTime
-//           });
-//       }
-//   } 
     } else if (e.data.type === 'currentTime') {
     if (exitingXR) {
       finishExitXR(e.data.time);
