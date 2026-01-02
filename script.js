@@ -52,9 +52,6 @@ const audio = document.getElementById("audio");
 const playlistChapters = document.getElementById("playlistChapters");
 const playlistContainer = document.getElementById("playlistContainer");
 
-const track4 = document.getElementById("track4");
-const track5 = document.getElementById("track5");
-const track6 = document.getElementById("track6");
 
 let currTrack = 0;
 let isPlaying = false;
@@ -78,7 +75,8 @@ function setupEvents() {
     muteButton.addEventListener('click', muteUnmute);
     volumeSlider.addEventListener('click', adjustVol);
     audio.addEventListener('timeupdate', updateProgress);
-    const progressContainer = document.querySelector('.progress-container');
+    const trackProgress = document.getElementById('trackProgress');
+    trackProgress.addEventListener('click', seekProgress);
     progressBar.addEventListener('click', seekProgress);
     viewXRButton.addEventListener('click', enterXR);
     exitXRButton.addEventListener('click', exitXR);
@@ -136,6 +134,10 @@ function seekProgress(e) {
     updatedTime = Math.max(0, Math.min(updatedTime, audio.duration));
     audio.currentTime = updatedTime;
 
+    const pct = 100 * (updatedTime / audio.duration);
+    progressBar.style.width = `${pct}%`;
+    currTime.textContent = formatDuration(updatedTime);
+
     if (isXR) {
         postMsgToIframe({
             action: 'setTime',
@@ -148,7 +150,9 @@ function seekProgress(e) {
             action: 'play',
             time: updatedTime
         });
+        audio.play();
     }
+
 }
 
 function sync() {
@@ -452,8 +456,8 @@ function loadMenu() {
         const track = trackData[i];
 
         chapter.innerHTML = `
-        <div id="track${track.chapterNum}" class="playlist-item">${track.chapterNum}. ${track.title}
-        <span class="duration">${track.duration}</span></div>
+        ${track.chapterNum}. ${track.title}
+         <span class="duration">${track.duration}</span>
         `;
 
         playlistChapters.appendChild(chapter);
